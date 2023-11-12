@@ -148,9 +148,6 @@ function slideDown(e) {
         items.forEach(item => {
             const newArticle = document.createElement('article')
             newArticle.innerHTML =  `
-                        <div class="slide">
-                            <i class="fa-solid fa-circle-up fa-rotate-90 fa-sm"></i>
-                        </div>
                         <span class="item">${item.value}</span>
                         <span class="icon">
                             <i class="fa-solid fa-pen-to-square fa-sm btn--edit"></i>
@@ -158,7 +155,7 @@ function slideDown(e) {
                         </span>
                 `
             newArticle.classList.add('new--article')
-            newArticle.style.margin = `12px 60px`
+            newArticle.style.margin = `12px 36px`
             section.style.transition = 'all ease 0.25s'
             deleteAllBtn.style.visibility = 'visible'
             newArticle.setAttribute('data-id', item.id)

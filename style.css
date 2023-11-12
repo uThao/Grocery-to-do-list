@@ -41,6 +41,7 @@ section {
     border-radius: 8px;  
     position: relative;
     transition: all ease 0.5s;
+    margin-bottom: 48%;
 }
 
 section::after {
