@@ -15,7 +15,7 @@ let   editFlag = false,
       editElement
 
     // preSetting
-submitBtn.style.height = inputCheckbox.offsetHeight + 'px'
+    submitBtn.style.height = inputCheckbox.offsetHeight + 'px'
     // alertFunction
 function displayAlert(msg, stt) {
     alertStatus.textContent = msg
@@ -66,7 +66,7 @@ function deleteItem(e) {
         deleteAllBtn.style.visibility = 'hidden'
         // logic
     const targetElement = e.target.parentElement.parentElement
-    console.log(e.currentTarget,targetElement,targetElement.dataset.id)
+    // console.log(e.currentTarget,targetElement,targetElement.dataset.id)
     list.removeChild(targetElement)
         // remove from local storage
     removeFromLocalStorage(targetElement.dataset.id)
@@ -78,7 +78,7 @@ function editItem(e) {
     editElement = e.currentTarget.parentElement.parentElement
     editFlag = true
     submitBtn.textContent = `Edit`
-    inputCheckbox.value = editElement.children[1].textContent
+    inputCheckbox.value = editElement.children[0].textContent
 }
 
 // set back to Default
@@ -109,36 +109,12 @@ function removeFromLocalStorage(idDelete) {
 function editFromLocalStorage(idEdit) {
     const items = JSON.parse(localStorage.getItem('items'))
     const itemEdit = items.map(item => {
-        console.log(item.id, item.value)
         // can rebuild logic
-        if(item.id === idEdit)  
-            return {id: item.id, value: inputCheckbox.value}
-        else 
-            return {id: item.id, value: item.value} 
+        return  (item.id === idEdit)  ?
+                {id: item.id, value: inputCheckbox.value} : 
+                {id: item.id, value: item.value} 
     })
     localStorage.setItem('items', JSON.stringify(itemEdit))
-}
-
-// slide down for more info 
-function slideDown(e) {
-    const item = e.currentTarget.nextElementSibling
-    if($$('.item.hidden').length == 0) {
-        item.classList.add('hidden')
-    }
-    else {
-        switch($('.item.hidden') !== item) {
-            case true: {
-                $$('.item.hidden').forEach(item => {
-                    item.classList.remove('hidden')  
-                })
-                item.classList.add('hidden')
-            }
-            case false: {
-                item.classList.remove('hidden')
-            }
-        }
-    }
-    item.style.transition = `all ease 0.36s`
 }
 
 //load onstock item from local storage
@@ -155,7 +131,7 @@ function slideDown(e) {
                         </span>
                 `
             newArticle.classList.add('new--article')
-            newArticle.style.margin = `12px 36px`
+            newArticle.style.margin = `12px ${inputCheckboxMargin}px`
             section.style.transition = 'all ease 0.25s'
             deleteAllBtn.style.visibility = 'visible'
             newArticle.setAttribute('data-id', item.id)
@@ -168,10 +144,6 @@ function slideDown(e) {
                 // add event listeners to edit btn
             $$('.btn--edit').forEach((btn) => {
                 btn.addEventListener('click', editItem)
-            })
-            $$('.slide').forEach((btn) => {
-                btn.addEventListener('click', slideDown)
-            section.style.transition = 'all ease 0.25s'
             })
         })
     }
@@ -187,7 +159,7 @@ function submit(e) {
     let code = new Date().getTime() 
         // edit input
     if(editFlag && value) {
-        editElement.children[1].textContent = inputCheckbox.value 
+        editElement.children[0].textContent = inputCheckbox.value 
         showEditAlert()
         editFromLocalStorage(editElement.dataset.id)
         setBack()
@@ -196,9 +168,6 @@ function submit(e) {
     else if(!editFlag && value) {  
         const newArticle = document.createElement('article')
         newArticle.innerHTML =  `
-                    <div class="slide">
-                        <i class="fa-solid fa-circle-up fa-rotate-90 fa-sm"></i>
-                    </div>
                     <span class="item">${value}</span>
                     <span class="icon">
                         <i class="fa-solid fa-pen-to-square fa-sm btn--edit"></i>
@@ -227,9 +196,6 @@ function submit(e) {
         // add event listeners to edit btn
         $$('.btn--edit').forEach((btn) => {
             btn.addEventListener('click', editItem)
-        })
-        $$('.slide').forEach((btn) => {
-            btn.addEventListener('click', slideDown)
         })
         // set back to default 
         setBack()
